@@ -1,0 +1,27 @@
+<div class="float-right mt-4 mr-2">
+    <?= $this->tag->linkTo(["admin/panel", "Назад","class" => "btn btn-danger px-5"]) ?>
+</div>
+<div class="clearfix"></div>
+<h4 class="text-center my-5 text-danger">Holidays</h4>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Holidays</th>
+                    <th>Data</th>
+                </tr>
+
+                    <?php foreach ($holidays as $holiday) { ?>
+                        <tr>
+                            <td><?= $holiday->holiday; ?> </td>
+                            <td><?= $holiday->holiday_date; ?> </td>
+                        </tr>
+                    <?php }?>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

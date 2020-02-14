@@ -1,0 +1,63 @@
+<?php $this->assets->addCss('//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',false); ?>
+<div class="float-right mt-5 mr-2">
+    <?= $this->tag->linkTo(["admin_panel", "Назад","class" => "btn btn-danger px-5"]) ?>
+</div>
+<div class="clearfix"></div>
+<h4 class="text-center my-4">Создать пользователя</h4>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+                <?php
+                $this->flashSession->output();
+                echo $this->getContent();
+                ?>
+            </div>
+            <?= $this->tag->form('register/index') ?>
+                <p>
+                    <label for="name">
+                        Имя
+                    </label>
+                    <?php echo $form->render('name',['class' => 'form-control','id' => 'first_name','name'=>'first_name' ]); ?>
+                </p>
+
+                <p>
+                    <label for="exampleInputEmail1">
+                        Почта или логин
+                    </label>
+                    <?php echo $form->render('email',['class' => 'form-control', 'id' => 'exampleInputEmail1','name'=>'email']); ?>
+                </p>
+                <p>
+                    <label for="role_id">
+                        Роль пользователя
+                    </label>
+                    <?php echo $form->render('role_id',['class' => 'form-control', 'id' => 'role_id','name'=>'role_id']); ?>
+                </p>
+                 <p>
+                    <label for="role_id">
+                       Активировать пользователя
+                    </label>
+                    <?php echo $form->render('activateUser',['class' => 'form-control', 'id' => 'role_id','name'=>'activeStatus']); ?>
+                </p>
+
+                <p>
+                    <label for="password">
+                        Пароль
+                    </label>
+                    <?php echo $form->render('newPassword',['class' => 'form-control', 'id' => 'password','name'=>'password']); ?>
+                </p>
+                <p>
+                    <label for="password">
+                        Введите пароль еще раз
+                    </label>
+                    <?php echo $form->render('repeatPassword',['class' => 'form-control', 'id' => 'password','name'=>'repeat_password']); ?>
+                </p>
+
+                <p>
+                    <input type='submit' value='Save' class="btn btn-success w-25" />
+                </p>
+
+            </form>
+        </div>
+    </div>
+</div>

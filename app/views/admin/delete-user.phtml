@@ -1,0 +1,24 @@
+<div class="alert alert-warning" role="alert">
+    <h4 class="text-center"><?php $this->flashSession->output();echo $this->getContent();?></h4>
+</div>
+<div class="my-3 mr-2 float-right">
+    <?= $this->tag->linkTo(["admin_panel", "В панель админ","class" => "btn btn-danger"]) ?>
+</div>
+<div class="clearfix"></div>
+<div class="container">
+    <div class="row">
+        <?php foreach ($users as $user) { ?>
+        <div class="col-3 my-2">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title"><?=$user->first_name;?></h5>
+                    <p class="card-text"><?=$user->email; ?></p>
+                    <p class="card-text">Привилегия: <?=$user->role_id ?></p>
+                    <?= $this->tag->linkTo(["admin/delete/$user->id ", "Удалить","class" => "btn btn-danger delete"]) ?>
+                    <?= $this->tag->linkTo(["admin/editUserData/$user->id", "Изменить","class" => "btn btn-info"]) ?>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+</div>

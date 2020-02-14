@@ -1,0 +1,22 @@
+<h4 class="text-center text-danger my-5">Выбрать нерабочие дни</h4>
+<div class="container">
+    <div class="alert alert-success" role="alert">
+        <?php echo "<h5 class='text-danger'>".$this->getContent()."</h5>"; ?>
+    </div>
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <?= $this->tag->form(['admin/setHolidays','class'=>'holiday']); ?>
+            <?php echo $checkboxForm->render('year',['class' => 'form-control w-25 my-2 d-inline','name'=>'year']); ?>
+            <?php echo $checkboxForm->render('month',['class' => 'form-control w-25 my-2 d-inline']); ?>
+            <?php echo $checkboxForm->render('day',['class' => 'form-control w-25 my-2 d-inline','name'=>'day','value'=>'1']); ?>
+            <?php echo $checkboxForm->render('description',['name'=>'description',"class"=>"form-control description w-75 mb-4"]); ?>
+            <?php  echo $checkboxForm->render('checkBox',['name'=>'checkBox',"value[]","class"=>"form-control d-inline w-25"]); ?>
+            <button type="submit" id="btnSave" class="btn btn-success mb-4">Сохранить</button>
+            <input type="reset" value="Очистить" class="btn btn-warning mb-4" />
+            <?= $this->tag->linkTo(["admin/panel", "Назад","class" => "btn btn-danger mb-4"]) ?>
+            <?= $this->tag->endForm();?>
+        </div>
+    </div>
+</div>
+<?php  echo Phalcon\Tag::javascriptInclude("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"); ?>
+<?php  echo \Phalcon\Tag::javascriptInclude("/js/custom.js"); ?>

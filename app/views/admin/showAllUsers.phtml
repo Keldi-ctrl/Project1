@@ -1,0 +1,20 @@
+<div class="float-right mt-2 mr-2">
+    <?= $this->tag->linkTo(["admin_panel", "Назад","class" => "btn btn-danger px-5"]) ?>
+</div>
+<div class="clearfix"></div>
+<div class="container">
+    <div class="row">
+            <?php $k=1; foreach ($users as $user)
+            { ?>
+        <div class="col-2 mt-3">
+            <h6><?=$k.".".$user->first_name; ?></h6>
+            <p><?= $user->email; ?></p>
+            <p><small>Привилегия </small><?= $user->role_id; ?></p>
+            <p><small>Активен </small><?= $user->active; ?></p>
+            <?= $this->tag->linkTo(["admin/particularUser/$user->id ", "Подробно","class" => "btn btn-info"]) ?>
+        </div>
+            <?php
+            $k++;
+            } ?>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+<div class="container my-2">
+    <div class="row">
+        <div class="col-12">
+            <div class="col-6 mx-auto">
+                <?= $this->tag->form('timetracker/show'); ?>
+                <?php echo $selectForm->render('year',['class' => 'form-control w-25 my-2 d-inline','name'=>'year']); ?>
+                <?php echo $selectForm->render('month',['class' => 'form-control w-25 my-2 d-inline','name'=>'month']); ?>
+                    <button type="submit" class="btn btn-info mb-2" id="btnSearch">Искать</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-8 mx-auto">
+            <div class="alert alert-success" role="alert">
+                <?php
+                echo "<h5 class='text-danger'>".$this->flashSession->output();
+                echo $this->getContent()."</h5>";
+                echo (isset($current_user)) ?  "<strong>"."Имя пользователя: "."</strong>" .$current_user['name']: ''; echo "<br>";
+                echo "<strong>Assigned: </strong> ".$assignedHours."<br>";
+                echo "<strong>Late hours:    </strong>".$totalLateHours."<br>";
+                echo "<strong>You have/Assigned: </strong>".$hourInPercent."%"."<br>";
+                ?>
+                <small>
+                    На работе необходимо быть до 9:30. Если опоздали больше 3х раз в месяц,
+                    то дисциплина будет считаться не удовлетворительной
+                    и негативно скажется на запрос по повышению оклада
+                </small>
+            </div>
+            <div class="mr-auto my-2">
+                <button type="button" id="hide" class="btn btn-info w-100 mb-2">HIDE</button>
+               <?= $this->tag->linkTo(['show','SHOW', 'class' => 'btn btn-info w-100']) ?>
+            </div>
+        </div>
+        <div class="col-12">
+            <table class="table table-dark" id="table2">
+                <tbody>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                        Started
+                    </th>
+                    <th>
+                        Finished
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+                <td>
+                    <?= (isset($date))? $date->format('Y-m-d'): date('Y-m-d') ?>
+                </td>
+                <td>
+                    <?= $this->tag->linkTo(['start_tracking', 'Start','id' => 'start','class' => 'btn btn-success mb-4']) ?>
+                    <?= $this->tag->linkTo(['stop_tracking', 'Stop','id' => 'stop', 'class' => 'btn btn-danger mb-4 ']) ?>
+                </td>
+                <td>
+                    <?=(isset($start_time))? $start_time : '';?>
+                </td>
+                <td>
+                    <?=(isset($stop_time)) ? $stop_time : '';?>
+                </td>
+                <td>
+                    <?= (isset($totalHoursPerDay))? $totalHoursPerDay : '';?>
+                </td>
+                </tbody>
+            </table>
+            <div class="table-responsive">
+            <table class="table table-bordered table-dark" id="table1">
+                <tbody>
+                <tr>
+                    <th><?= (isset($nameOFmonth)) ? $nameOFmonth : 'Date'; ?></th>
+                    <th  class="text-success"><?php  echo (isset($currentUser)) ? $currentUser['first_name']."<br>" : "";?></th>
+                    <?php if(isset($users_d)) { for ($i =0; $i < count($users_d); $i++) { ?>
+                        <th>
+                            <h5 class="text-success">
+                                <?php  if($users_d[$i]['id'] != $currentUser['id']) {
+                                    echo "User ID " . $users_d[$i]['id'] . "<br>";
+                                    echo $users_d[$i]['first_name'];
+                                }
+                                ?>
+                            </h5>
+                       </th>
+                    <?php } }?>
+                </tr>
+                <?php if (isset($daysInMonth)) { for ($i = 1, $j = 1; $i <= $daysInMonth; $i++, $j++) { ?>
+                        <tr>
+                            <th>
+                                <?php
+                               foreach ($holidays as $holiday) {
+                                   if (date('Y-m-d', strtotime($date->format("$year-$month-$j"))) == $holiday->holiday_date){
+                                       echo "<span class='text-danger'>Не рабочий день из-за $holiday->holiday</span><br>";
+                                   }
+                               }
+                                   $nameOFDay = date('l', strtotime($date->format("$year-$month-$j")));
+                                   echo ($nameOFDay == 'Saturday' || $nameOFDay == 'Sunday') ?
+                                       "<span class='text-warning'>" . $date->format("$j") . "<br>" . $nameOFDay . "</span>"
+                                       : $date->format("$j") . "<br>" . $nameOFDay;
+                                ?>
+                            </th>
+                            <!--Current user------->
+                            <th>
+                            <?php  if (isset($currentUser['times'])) for($cur = 0; $cur < count($currentUser['times']); $cur++ ) { ?>
+                            <?php if(date('Y-m-d', strtotime($date->format("$year-$month-$j"))) == $currentUser['times'][$cur]['date_tracker']) { ?>
+                                    <?php
+                                    echo "<input type=\"checkbox\" checked disabled>" . "<br>";
+                                        echo "Started " . $currentUser['times'][$cur]['start_time'] . "<br>";
+                                        echo "Finished " . $currentUser['times'][$cur]['stop_time'] . "<br>";
+                                        echo "Total " . $currentUser['times'][$cur]['total'] . "<br>";
+                                        echo "Date " . $currentUser['times'][$cur]['date_tracker'] . "<br>";
+                                        echo "<hr>";
+                                    ?>
+
+                            <?php }  }?>
+                            </th>
+                            <!-------------------------->
+                            <?php if (isset($users_d)) {
+                                foreach ($users_d as $arr) { ?>
+                                    <th>
+                                        <?php
+
+                                        if (isset($arr['times']))
+                                        {
+                                            for ($k = 0; $k < count($arr['times']); $k++)
+                                            {
+                                                if ($arr['times'][$k]['date_tracker'] == date('Y-m-d', strtotime($date->format("$year-$month-$j"))))
+                                                {
+                                                    if($arr['times'][$k]['user_id'] != $currentUser['times'][0]['user_id'])
+                                                        {
+                                                            echo "<input type=\"checkbox\" checked disabled>" . "<br>";
+                                                            echo "Started " . $arr['times'][$k]['start_time'] . "<br>";
+                                                            echo "Finished " . $arr['times'][$k]['stop_time'] . "<br>";
+                                                            echo "Total " . $arr['times'][$k]['total'] . "<br>";
+                                                            echo "Date " . $arr['times'][$k]['date_tracker'] . "<br>";
+                                                            echo "<hr>";
+                                                        }
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                    </th>
+                                <?php }
+                            } ?>
+                        </tr>
+                    <?php }}?>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div

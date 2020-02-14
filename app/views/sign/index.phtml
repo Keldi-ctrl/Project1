@@ -1,0 +1,24 @@
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+                <div class="row no-gutters">
+                    <div class="col-8 mx-auto py-3"  role="alert">
+                        <div class="alert alert-primary" role="alert">
+                            <?php
+                            $this->flashSession->output();
+                            echo $this->getContent();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-8 mx-auto">
+                    <?= $this->tag->form('sign/signIn');?>
+                    <?php echo $form->render('email',["class"=>"form-control mb-2 w-100","placeholder" =>"email"]); ?>
+                    <?php echo $form->render('password',["class" => "form-control my-5 w-100","placeholder" =>"пароль"]); ?>
+                    <?= $this->tag->submitButton(['Подтвердить', 'class'=>'btn btn-primary mx-auto w-50']);?>
+                    <?= $this->tag->endForm();?>
+                </div>
+        </div>
+    </div>
+</div>

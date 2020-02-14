@@ -1,0 +1,52 @@
+<html>
+<head>
+    <?php echo Phalcon\Tag::getTitle()?>
+    <?php $this->assets->addCss('//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',false); ?>
+    <?php $this->assets->addCss('css/style.css'); ?>
+    <?php $this->assets->outputCss(); ?>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-info justify-content-between">
+        <a class="navbar-brand" href="#">Growave</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto text-light">
+                <li class="nav-item">
+                    <?= $this->tag->linkTo(["/", "Главная","class"=>"nav-link text-light"]) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->tag->linkTo(["index/about", "About","class"=>"nav-link text-light"]) ?>
+                </li>
+
+                <?php if(!$this->auth->getIdentity()) { ?>
+                <li class="nav-item">
+                    <?= $this->tag->linkTo(["sign/index", "Sign in","class"=>"nav-link text-light"]) ?>
+                </li>
+                <?php } ?>
+
+                <?php if(is_array($this->auth->getIdentity())) { ?>
+                <li class="nav-item">
+                    <?= $this->tag->linkTo(["sign/signOut", "Sign out","class"=>"nav-link text-light"]) ?>
+                </li>
+                <?php } ?>
+
+                <?php if($this->auth->getIdentity()) { ?>
+                <li class="nav-item">
+                    <?= $this->tag->linkTo(["change","Изменить пароль","class"=>"nav-link text-light"]) ?>
+                </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </nav>
+</header>
+<?php echo Phalcon\Tag::javascriptInclude("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"); ?>
+<?php echo Phalcon\Tag::javascriptInclude("js/custom.js"); ?>
+</body>
+<html>
+<?php echo $this->getContent();
+echo $this->assets->outputJs();
+?>
